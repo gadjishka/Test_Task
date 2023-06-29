@@ -12,7 +12,6 @@ enum Tab {
     case search
     case bag
     case account
-    // добавьте дополнительные вкладки по мере необходимости
 }
 
 struct ContentView: View {

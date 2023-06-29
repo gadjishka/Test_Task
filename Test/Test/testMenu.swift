@@ -8,45 +8,74 @@
 import SwiftUI
 
 struct testMenu: View {
-    @State private var selectedTab: Tab = .home
-    
-    enum Tab {
-        case home
-        case settings
-        // добавьте дополнительные вкладки по мере необходимости
-    }
-    
+    @State private var buttonStates: [Bool] = [true, false, false, false, false]
+
     var body: some View {
-        TabView(selection: $selectedTab) {
-            HomeView()
-                .tabItem {
-                    Image(systemName: selectedTab == .home ? "house" : "heart")
-                    Text("Главная")
-                }
-                .tag(Tab.home)
+        HStack {
+            Button(action: {
+                self.updateButtonStates(index: 0)
+            }) {
+                Text("Кнопка 1")
+                    .padding()
+                    .foregroundColor(getButtonTextColor(forIndex: 0))
+                    .background(getButtonBackgroundColor(forIndex: 0))
+                    .cornerRadius(10)
+            }
             
-            SettingsView()
-                .tabItem {
-                    Image(systemName: selectedTab == .settings ? "gearshape.fill" : "xmark")
-                    Text("Настройки")
-                }
-                .tag(Tab.settings)
-        }
-        .onAppear {
-            UITabBar.appearance().unselectedItemTintColor = UIColor.black
+            Button(action: {
+                self.updateButtonStates(index: 1)
+            }) {
+                Text("Кнопка 2")
+                    .padding()
+                    .foregroundColor(getButtonTextColor(forIndex: 1))
+                    .background(getButtonBackgroundColor(forIndex: 1))
+                    .cornerRadius(10)
+            }
+            
+            Button(action: {
+                self.updateButtonStates(index: 2)
+            }) {
+                Text("Кнопка 3")
+                    .padding()
+                    .foregroundColor(getButtonTextColor(forIndex: 2))
+                    .background(getButtonBackgroundColor(forIndex: 2))
+                    .cornerRadius(10)
+            }
+            
+            Button(action: {
+                self.updateButtonStates(index: 3)
+            }) {
+                Text("Кнопка 4")
+                    .padding()
+                    .foregroundColor(getButtonTextColor(forIndex: 3))
+                    .background(getButtonBackgroundColor(forIndex: 3))
+                    .cornerRadius(10)
+            }
+            
+            Button(action: {
+                self.updateButtonStates(index: 4)
+            }) {
+                Text("Кнопка 5")
+                    .padding()
+                    .foregroundColor(getButtonTextColor(forIndex: 4))
+                    .background(getButtonBackgroundColor(forIndex: 4))
+                    .cornerRadius(10)
+            }
         }
     }
-}
-
-struct HomeView: View {
-    var body: some View {
-        Text("Это вкладка 'Главная'")
+    
+    private func getButtonBackgroundColor(forIndex index: Int) -> Color {
+        return buttonStates[index] ? .blue : .gray
     }
-}
-
-struct SettingsView: View {
-    var body: some View {
-        Text("Это вкладка 'Настройки'")
+    
+    private func getButtonTextColor(forIndex index: Int) -> Color {
+        return buttonStates[index] ? .white : .black
+    }
+    
+    private func updateButtonStates(index: Int) {
+        buttonStates = buttonStates.enumerated().map { (buttonIndex, _) in
+            return buttonIndex == index
+        }
     }
 }
 

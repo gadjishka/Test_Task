@@ -27,6 +27,7 @@
 		329095812A4B38B700E605D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329095802A4B38B700E605D5 /* ContentView.swift */; };
 		329095832A4B38B900E605D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 329095822A4B38B900E605D5 /* Assets.xcassets */; };
 		329095862A4B38B900E605D5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 329095852A4B38B900E605D5 /* Preview Assets.xcassets */; };
+		32BCF58D2A4DE60C00C59108 /* TimeAndLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BCF58C2A4DE60C00C59108 /* TimeAndLocation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,7 @@
 		329095802A4B38B700E605D5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		329095822A4B38B900E605D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		329095852A4B38B900E605D5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		32BCF58C2A4DE60C00C59108 /* TimeAndLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeAndLocation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +142,7 @@
 		3290957D2A4B38B700E605D5 /* Test */ = {
 			isa = PBXGroup;
 			children = (
+				32BCF58B2A4DE5E500C59108 /* Navigation Bar Logic */,
 				3290957E2A4B38B700E605D5 /* TestApp.swift */,
 				329095802A4B38B700E605D5 /* ContentView.swift */,
 				323D58CD2A4C393700148D42 /* Main Menu View */,
@@ -161,6 +164,14 @@
 				329095852A4B38B900E605D5 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		32BCF58B2A4DE5E500C59108 /* Navigation Bar Logic */ = {
+			isa = PBXGroup;
+			children = (
+				32BCF58C2A4DE60C00C59108 /* TimeAndLocation.swift */,
+			);
+			path = "Navigation Bar Logic";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -242,6 +253,7 @@
 				323D58CA2A4C36C000148D42 /* Data.swift in Sources */,
 				323D58D32A4C522C00148D42 /* MainMenuRow.swift in Sources */,
 				3290957F2A4B38B700E605D5 /* TestApp.swift in Sources */,
+				32BCF58D2A4DE60C00C59108 /* TimeAndLocation.swift in Sources */,
 				323D58CF2A4C397F00148D42 /* MainMenuItem.swift in Sources */,
 				327C28DA2A4DB8510025912D /* BagItem.swift in Sources */,
 				323D58C62A4C34BB00148D42 /* Dishes.swift in Sources */,
@@ -382,6 +394,8 @@
 				DEVELOPMENT_TEAM = Q7HLS9L7NM;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Разреши";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Разреши";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -411,6 +425,8 @@
 				DEVELOPMENT_TEAM = Q7HLS9L7NM;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Разреши";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Разреши";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

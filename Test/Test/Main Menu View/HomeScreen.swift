@@ -20,7 +20,7 @@ struct HomeScreen: View {
             }
             .navigationBarItems(
                 leading: Button(action: {
-                    // Действие для левой кнопки
+                    //getCurrentCity()
                 }) {
                     navigationLeftBarItemView()
                 } .disabled(true)
@@ -71,7 +71,7 @@ struct navigationLeftBarItemView: View {
                             .weight(.medium)
                     )
                     .foregroundColor(.black)
-                Text("12 Августа, 2023")
+                Text(getCurrentDate())
                     .font(Font.custom("SF Pro Display", size: 14))
                     .kerning(0.14)
                     .foregroundColor(.black.opacity(0.5))
