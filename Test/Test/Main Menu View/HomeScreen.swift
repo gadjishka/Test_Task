@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import CoreLocation
 
 
 struct HomeScreen: View {
@@ -18,29 +18,24 @@ struct HomeScreen: View {
             VStack {
                 MainMenuRow(items: items)
             }
-            .navigationBarItems(
-                leading: Button(action: {
-                    //getCurrentCity()
-                }) {
-                    navigationLeftBarItemView()
-                } .disabled(true)
-                ,
-                trailing: Button(action: {
-                    // Действие для правой кнопки
-                }) {
-                    Text("")
-                        .frame(width: 44, height: 44)
-                        .background(
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    NavigationLeftBarItemView()
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        // Действие для правой кнопки
+                    }) {
                         Image("userIcon")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 44, height: 44)
-                        .clipped()
-                        )
-                        .background(.white)
-                        .cornerRadius(100)
-                } .disabled(true)
-            )
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 44, height: 44)
+                            .clipShape(Circle())
+                            .padding(4)
+                            .background(Color.white.clipShape(Circle()))
+                    }
+                }
+            }
         }
     }
 }
@@ -52,7 +47,9 @@ struct HomeScreen_Previews: PreviewProvider {
     }
 }
 
-struct navigationLeftBarItemView: View {
+struct NavigationLeftBarItemView: View {
+    @ObservedObject private var locationManager = LocationManager()
+    
     var body: some View {
         HStack {
             Text("")
@@ -65,7 +62,7 @@ struct navigationLeftBarItemView: View {
                         .clipped()
                 )
             VStack(alignment: .leading, spacing: 4) {
-                Text("Санкт-Петербург")
+                Text("\(locationManager.userCity)")
                     .font(
                         Font.custom("SF Pro Display", size: 18)
                             .weight(.medium)
@@ -75,7 +72,11 @@ struct navigationLeftBarItemView: View {
                     .font(Font.custom("SF Pro Display", size: 14))
                     .kerning(0.14)
                     .foregroundColor(.black.opacity(0.5))
-            } .padding(0)
+            }
+            .padding(0)
+        }
+        .onAppear {
+            locationManager.requestLocation()
         }
     }
 }
