@@ -9,20 +9,24 @@ import SwiftUI
 
 struct MainMenuItem: View {
     public var object: Category
-    private var categoryBackgroundImage: Image {
-        loadImageFromURL(urlString: self.object.image_url)
-    }
+    @State private var categoryBackgroundImage: Image?
     @State private var isActive: Bool = false
-//    private var colors: [Color] = [Color(red: 1, green: 0.95, blue: 0.82), Color(red: 1, green: 0.92, blue: 0.88), Color(red: 0.85, green: 0.96, blue: 0.95), Color(red: 0.94, green: 0.96, blue: 0.81)]
+    
+    private func loadCategoryBackgroundImage() async {
+        categoryBackgroundImage = await loadImageFromURL(urlString: object.image_url)
+    }
+    
     var body: some View {
         Button(action: {
             isActive = true
         }) {
             ZStack {
-                categoryBackgroundImage
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .clipped()
+                if let image = categoryBackgroundImage {
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .clipped()
+                }
                 
                 Text(object.name)
                     .font(
@@ -41,12 +45,11 @@ struct MainMenuItem: View {
             NavigationLink(destination: CategoryView(object: object), isActive: $isActive) {
                 EmptyView()
             }
-            .hidden()
+                .hidden()
         )
-
-
-            
-        
+        .task {
+            await loadCategoryBackgroundImage()
+        }
     }
 }
 

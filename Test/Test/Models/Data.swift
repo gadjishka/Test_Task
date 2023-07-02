@@ -28,13 +28,20 @@ func load<T: Decodable>(_ filename: String, as type: T.Type = T.self) -> T {
 }
 
 
-func loadImageFromURL(urlString: String) -> Image {
-    guard let url = URL(string: urlString),
-          let imageData = try? Data(contentsOf: url),
-          let uiImage = UIImage(data: imageData) else {
-        return Image(systemName: "photo") // Возвращаем заглушку, если не удалось загрузить изображение
+func loadImageFromURL(urlString: String) async -> Image {
+    guard let url = URL(string: urlString) else {
+        return Image(systemName: "photo") // Заглушка для изображения
     }
     
-    let image = Image(uiImage: uiImage)
-    return image
+    do {
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        if let uiImage = UIImage(data: data) {
+            return Image(uiImage: uiImage)
+        }
+    } catch {
+        print("Error loading image: \(error)")
+    }
+    
+    return Image(systemName: "photo") // Заглушка для изображения
 }

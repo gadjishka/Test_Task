@@ -16,8 +16,9 @@ enum Tab {
 
 struct ContentView: View {
     @State private var selectedTab: Tab = .home
+    @EnvironmentObject private var cartManager: CartManager
+    
     var body: some View {
-        
         TabView (selection: $selectedTab){
             // Вкладка 1
             HomeScreen(items: categoryMaterials)
@@ -34,11 +35,13 @@ struct ContentView: View {
                 }.tag(Tab.search)
             
             // Вкладка корзина
-            BagView()
+            BagView() // Исправлено здесь
+                .environmentObject(cartManager)
                 .tabItem {
                     Image(selectedTab == .bag ? "bag.blue" : "bag")
                     Text("Корзина")
                 }.tag(Tab.bag)
+            
             // Вкладка аккаунт
             Text("Аккаунт")
                 .tabItem {

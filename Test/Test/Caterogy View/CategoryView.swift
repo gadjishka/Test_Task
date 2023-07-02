@@ -8,92 +8,45 @@
 import SwiftUI
 
 struct CategoryView: View {
-    
     let object: Category
-    
+    @Environment(\.presentationMode) var presentationMode
+    private let dishes = Filtering()
+    @State private var filteredDishes: [Dish] = dishesMaterials
+    @State private var dishesNotFiltered = dishesMaterials
     @State private var buttonStates: [Bool] = [true, false, false, false, false]
+    private let buttonsNames: [String] = ["Все меню", "Салаты", "С рисом", "С рыбой", "Роллы"]
+
     var body: some View {
-        VStack{
+        VStack {
             ScrollView(.horizontal) {
-                HStack(alignment: .top, spacing: 10){
-                    Button(action: {
-                        self.updateButtonStates(index: 0)
-                    }) {
-                        Text("Все меню")
-                            .font(Font.custom("SF Pro Display", size: 14))
-                            .kerning(0.14)
-                            .foregroundColor(getButtonTextColor(forIndex: 0))
-                            .cornerRadius(10)
+                HStack(alignment: .top, spacing: 10) {
+                    ForEach(Array(buttonsNames.enumerated()), id: \.element) { index, name in
+                        Button(action: {
+                            self.updateButtonStates(index: index)
+                            filteredDishes = dishes.filterItemsByTeg(dishes: dishesNotFiltered, teg: name)
+                        }) {
+                            Text(name)
+                                .font(Font.custom("SF Pro Display", size: 14))
+                                .kerning(0.14)
+                                .foregroundColor(getButtonTextColor(forIndex: index))
+                                .cornerRadius(10)
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                        .background(getButtonBackgroundColor(forIndex: index))
+                        .cornerRadius(10)
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
-                    .background(getButtonBackgroundColor(forIndex: 0))
-                    .cornerRadius(10)
-                    
-                    Button(action: {
-                        self.updateButtonStates(index: 1)
-                    }) {
-                        Text("Салаты")
-                            .font(Font.custom("SF Pro Display", size: 14))
-                            .kerning(0.14)
-                            .foregroundColor(getButtonTextColor(forIndex: 1))
-                            .cornerRadius(10)
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
-                    .background(getButtonBackgroundColor(forIndex: 1))
-                    .cornerRadius(10)
-                    
-                    Button(action: {
-                        self.updateButtonStates(index: 2)
-                    }) {
-                        Text("С рисом")
-                            .font(Font.custom("SF Pro Display", size: 14))
-                            .kerning(0.14)
-                            .foregroundColor(getButtonTextColor(forIndex: 2))
-                            .cornerRadius(10)
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
-                    .background(getButtonBackgroundColor(forIndex: 2))
-                    .cornerRadius(10)
-                    Button(action: {
-                        self.updateButtonStates(index: 3)
-                    }) {
-                        Text("С рыбой")
-                            .font(Font.custom("SF Pro Display", size: 14))
-                            .kerning(0.14)
-                            .foregroundColor(getButtonTextColor(forIndex: 3))
-                            .cornerRadius(10)
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
-                    .background(getButtonBackgroundColor(forIndex: 3))
-                    .cornerRadius(10)
-                    Button(action: {
-                        self.updateButtonStates(index: 4)
-                    }) {
-                        Text("Роллы")
-                            .font(Font.custom("SF Pro Display", size: 14))
-                            .kerning(0.14)
-                            .foregroundColor(getButtonTextColor(forIndex: 4))
-                            .cornerRadius(10)
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
-                    .background(getButtonBackgroundColor(forIndex: 4))
-                    .cornerRadius(10)
-                }.padding()
-                
-                
+                }
+                .padding()
             }
             
-            CategoryRow(items: dishesMaterials)
-            
+            CategoryRow(items: filteredDishes)
         }
-        
+        .background(Color.white) // Фоновый цвет для всего CategoryView
         .navigationBarTitle(Text(object.name))
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitleDisplayMode(.automatic)
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: backButton)
         .navigationBarItems(trailing: Button(action: {
             // Действие для правой кнопки
         }) {
@@ -108,10 +61,27 @@ struct CategoryView: View {
                 )
                 .background(.white)
                 .cornerRadius(100)
-        } .disabled(true)
+        }
+        .disabled(true)
         )
-        
     }
+    
+    private var backButton: some View {
+        Button(action: {
+            goBack()
+        }) {
+            Image("backButton")
+                .frame(width: 6, height: 12)
+        }
+        .onTapGesture {
+            goBack()
+        }
+    }
+    
+    private func goBack() {
+        presentationMode.wrappedValue.dismiss()
+    }
+    
     private func getButtonBackgroundColor(forIndex index: Int) -> Color {
         return buttonStates[index] ? Color(red: 0.2, green: 0.39, blue: 0.88) : Color(red: 0.97, green: 0.97, blue: 0.96)
     }
@@ -128,34 +98,6 @@ struct CategoryView: View {
 }
 
 
-//struct SectionButton: View {
-//    var title: String
-//    var index: Int
-//
-//    var body: some View {
-//        Button(action: {
-//            self.updateButtonStates(index: index)
-//        }) {
-//            Text(title)
-//                .padding()
-//                .foregroundColor(getButtonTextColor(forIndex: index))
-//                .background(getButtonBackgroundColor(forIndex: index))
-//                .cornerRadius(10)
-//
-//
-//
-//            //        } .padding(.horizontal, 16)
-//            //            .padding(.vertical, 10)
-//            //            .background(getButtonBackgroundColor(forIndex: index))
-//            //        //.background(Color(red: 0.97, green: 0.97, blue: 0.96))
-//            //            .cornerRadius(10)
-//
-//        }
-//
-//
-//    }
-//
-//}
 
 struct CategoryView_Previews: PreviewProvider {
     static var previews: some View {

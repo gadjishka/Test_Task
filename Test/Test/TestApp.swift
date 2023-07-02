@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct TestApp: App {
+    @StateObject private var cartManager = CartManager.shared
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(cartManager)
         }
     }
 }
+
+

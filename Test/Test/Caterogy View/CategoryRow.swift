@@ -9,20 +9,17 @@ import SwiftUI
 
 struct CategoryRow: View {
     var items: [Dish]
-    @State var showProfile = false
-    @State var selectedDish = 0
-    private var imageOfSelectedDish: Image {
-            loadImageFromURL(urlString: self.items[selectedDish].image_url)
-    }
-
+    @State private var showProfile = false
+    @State private var selectedDish = 0
+    
     var body: some View {
         ZStack {
             ScrollView {
                 VStack(spacing: 30) {
-                    ForEach(0..<items.count/3, id: \.self) { rowIndex in
+                    ForEach(0..<items.count/3 + 1, id: \.self) { row in
                         HStack(spacing: 10) {
-                            ForEach(0..<3, id: \.self) { columnIndex in
-                                let index = rowIndex * 3 + columnIndex
+                            ForEach(0..<3) { column in
+                                let index = row * 3 + column
                                 if index < items.count {
                                     Button {
                                         self.showProfile = true
@@ -30,10 +27,8 @@ struct CategoryRow: View {
                                     } label: {
                                         CategoryItem(object: items[index])
                                     }
-                                    
                                 } else {
-                                    // Заполнитель для пустых ячеек
-                                    Color.clear
+                                    Spacer()
                                 }
                             }
                         }
@@ -41,12 +36,15 @@ struct CategoryRow: View {
                 }
                 .padding()
             }
-            ProductView(object: items[selectedDish], dishImage: imageOfSelectedDish, showProfile: $showProfile)
-                .offset(y: showProfile ? 0 : 1000)
-                .animation(.spring(response: 0.3, dampingFraction: 1, blendDuration: 0))
+            if showProfile {
+                ProductView(object: items[selectedDish], showProfile: $showProfile)
+                    .transition(.move(edge: .bottom))
+            }
         }
+        .background(Color.white)
     }
 }
+
 
 struct CategoryRow_Previews: PreviewProvider {
     static var previews: some View {

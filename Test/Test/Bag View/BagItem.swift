@@ -8,59 +8,75 @@
 import SwiftUI
 
 struct BagItem: View {
-    @State private var value = 0
+    @EnvironmentObject var cartManager: CartManager
     var bagItem: Dish
-    private var bagBackgroundImage: Image {
-        loadImageFromURL(urlString: self.bagItem.image_url)
+    @State private var bagBackgroundImage: Image?
+    
+    private func loadBagBackgroundImage() async {
+        bagBackgroundImage = await loadImageFromURL(urlString: bagItem.image_url)
     }
+    private func getIndexForDish(_ dish: Dish) -> Int {
+        return cartManager.currentCart.dishes.firstIndex(where: { $0.name == dish.name }) ?? 0
+    }
+
     
     var body: some View {
         HStack(alignment: .center, spacing: 8) {
-            HStack{
-                Rectangle()
-                    .foregroundColor(.clear)
-                    .frame(width: 48.34863, height: 52.89908)
-                    .background(
-                        bagBackgroundImage
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 48.34862518310547, height: 52.89908218383789)
-                            .clipped()
-                    )
-                    .padding(.leading, 9.66971)
-                    .padding(.trailing, 3.98166)
-                    .padding(.top, 7.39448)
-                    .padding(.bottom, 1.70644)
-                    .background(Color(red: 0.97, green: 0.97, blue: 0.96))
-                    .cornerRadius(6)
-                VStack(alignment: .leading, spacing: 4) {
-                    DetailProductText(name: bagItem.name)
-                    HStack{
-                        DetailProductText(name: "\(bagItem.price) ₽")
-                        DetailProductText(name: "· \(bagItem.weight)г")
-                            .contrast(0.2)
-                    }
-                    
+            HStack (alignment: .center, spacing: 0){
+                if let image = bagBackgroundImage {
+                    Rectangle()
+                        .foregroundColor(.clear)
+                        .frame(width: 48.34863, height: 52.89908)
+                        .background(
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 48.34862518310547, height: 52.89908218383789)
+                                .clipped()
+                        )
                 }
-            }.padding(.horizontal)
+            } .padding(.leading, 9.66971)
+                .padding(.trailing, 3.98166)
+                .padding(.top, 7.39448)
+                .padding(.bottom, 1.70644)
+                .background(Color(red: 0.97, green: 0.97, blue: 0.96))
+                .cornerRadius(6)
+            
+            
+            VStack(alignment: .leading, spacing: 4) {
+                DetailProductText(name: bagItem.name)
+                HStack {
+                    DetailProductText(name: "\(bagItem.price) ₽")
+                    DetailProductText(name: "· \(bagItem.weight)г")
+                        .contrast(0.2)
+                }
+            }
+            .padding(.horizontal)
+            
             Spacer()
-            CustomStepper(value: $value, range: 0...15)
+            
+            CustomStepper(dish: bagItem, value: $cartManager.currentCart.dishesCount[getIndexForDish(bagItem)])
+
                 .padding()
-        }
+        }.padding(.leading, 16)
+            .onAppear {
+                Task {
+                    await loadBagBackgroundImage()
+                }
+            }
     }
 }
 
-
 struct CustomStepper: View {
+    @EnvironmentObject var cartManager: CartManager
+    var dish: Dish
     @Binding var value: Int
-    let range: ClosedRange<Int>
+    private let range: ClosedRange<Int> = 0...15
     
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
             Button(action: {
-                if value > range.lowerBound {
-                    value -= 1
-                }
+                cartManager.removeDishFromCart(dish: dish)
             }) {
                 
                 ZStack {
@@ -77,14 +93,16 @@ struct CustomStepper: View {
             .disabled(value <= 0 ? true : false)
             
             Text("\(value)")
-                .font(.system(size: 18))
+                .font(
+                    Font.custom("SF Pro Display", size: 14)
+                        .weight(.medium)
+                )
+                .kerning(0.14)
                 .foregroundColor(.black)
             
             
             Button(action: {
-                if value < range.upperBound {
-                    value += 1
-                }
+                cartManager.addDishToCart(dish: dish)
             }) {
                 Image(systemName: "plus")
                     .font(.system(size: 20))
@@ -102,8 +120,6 @@ struct CustomStepper: View {
         
     }
 }
-
-
 struct BagItem_Previews: PreviewProvider {
     static var previews: some View {
         BagItem(bagItem: dishesMaterials[0])
