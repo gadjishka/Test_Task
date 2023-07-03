@@ -22,7 +22,7 @@ struct BagRow: View {
                     }
                 }
             }
-        } .background(Color.white)
+        } .padding(.top, 20)
     }
 }
 struct BagRow_Previews: PreviewProvider {

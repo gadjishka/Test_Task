@@ -48,7 +48,7 @@ struct ContentView: View {
                     Image("account")
                     Text("Аккаунт")
                 }.tag(Tab.account)
-        }
+        } 
     }
 }
 
