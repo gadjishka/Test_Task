@@ -84,16 +84,21 @@ struct ProductView: View {
                     HStack(alignment: .center, spacing: 0) {
                         Button {
                             cartManager.addDishToCart(dish: object)
-                            print(object.name)
                         } label: {
-                            Text("Добавить в корзину")
-                                .font(
-                                    Font.custom("SF Pro Display", size: 16)
-                                        .weight(.medium)
-                                )
-                                .kerning(0.1)
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(.white)
+                            ZStack{
+                                Text("Добавить в корзину")
+                                    .font(
+                                        Font.custom("SF Pro Display", size: 16)
+                                            .weight(.medium)
+                                    )
+                                    .kerning(0.1)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(.white)
+                                Color.clear
+                                    .contentShape(Rectangle())
+                                    .frame(width: 311, height: 48)
+                            }
+                            
                         }
                     }
                     .padding(0)
