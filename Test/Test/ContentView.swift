@@ -19,31 +19,31 @@ struct ContentView: View {
     @EnvironmentObject private var cartManager: CartManager
     
     var body: some View {
-        TabView (selection: $selectedTab){
-            // Вкладка 1
-            HomeScreen(items: categoryMaterials)
+        TabView(selection: $selectedTab) {
+            // Вкладка 1: Главная
+            MainMenuView(items: categoryMaterials)
                 .tabItem {
                     Image(selectedTab == .home ? "main.blue" : "main")
                     Text("Главная")
                 }.tag(Tab.home)
             
-            // Вкладка поиск
-            Text("Поиск")
+            // Вкладка 2: Поиск
+            Text("Раздел находится в разработке")
                 .tabItem {
                     Image("search")
                     Text("Поиск")
                 }.tag(Tab.search)
             
-            // Вкладка корзина
-            BagView() // Исправлено здесь
+            // Вкладка 3: Корзина
+            BagView()
                 .environmentObject(cartManager)
                 .tabItem {
                     Image(selectedTab == .bag ? "bag.blue" : "bag")
                     Text("Корзина")
                 }.tag(Tab.bag)
             
-            // Вкладка аккаунт
-            Text("Аккаунт")
+            // Вкладка 4: Аккаунт
+            Text("Раздел находится в разработке")
                 .tabItem {
                     Image("account")
                     Text("Аккаунт")
@@ -51,7 +51,6 @@ struct ContentView: View {
         }
     }
 }
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct MainMenuRow: View {
-    
     var items: [Category]
     
     var body: some View {
         ScrollView {
             VStack(alignment: .center) {
+                // Создаем экземпляр `MainMenuItem` для каждого элемента в `items`
                 ForEach(self.items) { item in
                     MainMenuItem(object: item)
                 }
@@ -27,3 +27,4 @@ struct MainMenuRow_Previews: PreviewProvider {
         MainMenuRow(items: categoryMaterials)
     }
 }
+

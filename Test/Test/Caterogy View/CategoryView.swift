@@ -18,6 +18,7 @@ struct CategoryView: View {
 
     var body: some View {
         VStack {
+            // Горизонтальная прокрутка для кнопок фильтрации
             ScrollView(.horizontal) {
                 HStack(alignment: .top, spacing: 10) {
                     ForEach(Array(buttonsNames.enumerated()), id: \.element) { index, name in
@@ -40,6 +41,7 @@ struct CategoryView: View {
                 .padding()
             }
             
+            // Отображение блюд в строках с прокруткой
             CategoryRow(items: filteredDishes)
         }
         .background(Color.white) // Фоновый цвет для всего CategoryView
@@ -66,6 +68,7 @@ struct CategoryView: View {
         )
     }
     
+    // Кнопка "Назад" в навигационной панели
     private var backButton: some View {
         Button(action: {
             goBack()
@@ -82,26 +85,28 @@ struct CategoryView: View {
         }
     }
     
+    // Функция для перехода назад
     private func goBack() {
         presentationMode.wrappedValue.dismiss()
     }
     
+    // Получение цвета фона кнопки в зависимости от состояния
     private func getButtonBackgroundColor(forIndex index: Int) -> Color {
         return buttonStates[index] ? Color(red: 0.2, green: 0.39, blue: 0.88) : Color(red: 0.97, green: 0.97, blue: 0.96)
     }
     
+    // Получение цвета текста кнопки в зависимости от состояния
     private func getButtonTextColor(forIndex index: Int) -> Color {
         return buttonStates[index] ? .white : .black
     }
     
+    // Обновление состояний кнопок фильтрации
     private func updateButtonStates(index: Int) {
         buttonStates = buttonStates.enumerated().map { (buttonIndex, _) in
             return buttonIndex == index
         }
     }
 }
-
-
 
 struct CategoryView_Previews: PreviewProvider {
     static var previews: some View {

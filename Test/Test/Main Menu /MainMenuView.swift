@@ -9,22 +9,24 @@ import SwiftUI
 import CoreLocation
 
 
-struct HomeScreen: View {
-    
+struct MainMenuView: View {
     var items: [Category]
     
     var body: some View {
         NavigationStack {
             VStack {
+                // Отображение строки главного меню с переданными категориями
                 MainMenuRow(items: items)
             }.padding(.top, 15)
             .toolbar {
+                // Настройка панели инструментов навигации
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLeftBarItemView()
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
+                    // Правая кнопка в панели инструментов
                     Button(action: {
-                        // Действие для правой кнопки
+                        // Действие, выполняемое при нажатии на кнопку
                     }) {
                         Image("userIcon")
                             .resizable()
@@ -40,10 +42,9 @@ struct HomeScreen: View {
     }
 }
 
-
-struct HomeScreen_Previews: PreviewProvider {
+struct MainMenuView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeScreen(items: categoryMaterials)
+        MainMenuView(items: categoryMaterials)
     }
 }
 
@@ -62,6 +63,7 @@ struct NavigationLeftBarItemView: View {
                         .clipped()
                 )
             VStack(alignment: .leading, spacing: 4) {
+                // Отображение города пользователя и текущей даты
                 Text("\(locationManager.userCity)")
                     .font(
                         Font.custom("SF Pro Display", size: 18)
@@ -76,7 +78,9 @@ struct NavigationLeftBarItemView: View {
             .padding(0)
         }
         .onAppear {
+            // Запрос на получение местоположения пользователя
             locationManager.requestLocation()
         }
     }
 }
+
