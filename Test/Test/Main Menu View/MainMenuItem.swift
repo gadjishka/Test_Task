@@ -31,15 +31,18 @@ struct MainMenuItem: View {
                 Text(object.name)
                     .font(
                         Font.custom("SF Pro Display", size: 20)
-                            .weight(.medium)
+                            .weight(.black)
                     )
+                    .multilineTextAlignment(.leading)
                     .kerning(0.2)
                     .foregroundColor(.black)
                     .frame(width: 191, height: 50, alignment: .leading)
-                    .offset(x: -65, y: -40)
+                    .offset(x: -80, y: -40)
             }
         }
-        .frame(width: 343, height: 148)
+        
+        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 148, maxHeight: 148)
+        .padding()
         .cornerRadius(10)
         .background(
             NavigationLink(destination: CategoryView(object: object), isActive: $isActive) {

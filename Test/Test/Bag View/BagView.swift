@@ -16,34 +16,55 @@ struct BagView: View {
     }
     
     var body: some View {
-        VStack {
-            BagRow(bagItems: cartManager.currentCart.dishes)
-            
-            Button(action: {
-                // Действия при нажатии кнопки оплаты
-            }) {
-                ZStack {
-                    Text("Оплатить \(totalCost) ₽")
-                        .font(Font.custom("SF Pro Display", size: 16).weight(.medium))
-                        .kerning(0.1)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.white)
-                    
-                    Color.clear
-                        .contentShape(Rectangle())
-                        .frame(width: 343, height: 48)
+        NavigationStack{
+            VStack {
+                BagRow(bagItems: cartManager.currentCart.dishes)
+                
+                Button(action: {
+                    // Действия при нажатии кнопки оплаты
+                }) {
+                    ZStack {
+                        Text("Оплатить \(totalCost) ₽")
+                            .font(Font.custom("SF Pro Display", size: 16).weight(.medium))
+                            .kerning(0.1)
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.white)
+                        
+                        Color.clear
+                            .contentShape(Rectangle())
+                            .frame(width: 343, height: 48)
+                    }
+                }
+                .frame(width: 343, height: 48)
+                .background(Color(red: 0.2, green: 0.39, blue: 0.88))
+                .cornerRadius(10)
+                .padding(15)
+                .background(Color.clear)
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    NavigationLeftBarItemView()
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        // Действие для правой кнопки
+                    }) {
+                        Image("userIcon")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 44, height: 44)
+                            .clipShape(Circle())
+                            .padding(4)
+                            .background(Color.white.clipShape(Circle()))
+                    }
                 }
             }
-            .frame(width: 343, height: 48)
-            .background(Color(red: 0.2, green: 0.39, blue: 0.88))
-            .cornerRadius(10)
-            .padding(15)
-            .background(Color.clear)
         }
         .environmentObject(CartManager.shared)
         .onReceive(cartManager.$totalCost) { newTotalCost in
             totalCost = newTotalCost
         }
+        
     }
 }
 

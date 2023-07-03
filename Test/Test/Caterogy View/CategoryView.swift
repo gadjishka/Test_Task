@@ -71,7 +71,11 @@ struct CategoryView: View {
             goBack()
         }) {
             Image("backButton")
-                .frame(width: 6, height: 12)
+                .padding(.leading, 8)
+                .padding(.trailing, 10)
+                .padding(.vertical, 5)
+                .frame(width: 32, height: 32, alignment: .center)
+                .cornerRadius(50)
         }
         .onTapGesture {
             goBack()

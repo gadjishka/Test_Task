@@ -17,7 +17,7 @@ struct HomeScreen: View {
         NavigationStack {
             VStack {
                 MainMenuRow(items: items)
-            }
+            }.padding(.top, 15)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLeftBarItemView()

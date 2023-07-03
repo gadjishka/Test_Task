@@ -13,7 +13,7 @@ struct MainMenuRow: View {
     
     var body: some View {
         ScrollView {
-            VStack(alignment: .center, spacing: 15) {
+            VStack(alignment: .center) {
                 ForEach(self.items) { item in
                     MainMenuItem(object: item)
                 }
