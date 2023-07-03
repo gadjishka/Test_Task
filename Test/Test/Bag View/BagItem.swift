@@ -15,10 +15,10 @@ struct BagItem: View {
     private func loadBagBackgroundImage() async {
         bagBackgroundImage = await loadImageFromURL(urlString: bagItem.image_url)
     }
-    private func getIndexForDish(_ dish: Dish) -> Int {
-        return cartManager.currentCart.dishes.firstIndex(where: { $0.name == dish.name }) ?? 0
+    private func getIndexForDish(_ dish: Dish) -> Int? {
+        return cartManager.currentCart.dishes.firstIndex(where: { $0.name == dish.name })
     }
-
+    
     
     var body: some View {
         HStack(alignment: .center, spacing: 8) {
@@ -55,9 +55,12 @@ struct BagItem: View {
             
             Spacer()
             
-            CustomStepper(dish: bagItem, value: $cartManager.currentCart.dishesCount[getIndexForDish(bagItem)])
-
-                .padding()
+            if let index = getIndexForDish(bagItem) {
+                let value = $cartManager.currentCart.dishesCount[index]
+                CustomStepper(dish: bagItem, value: value)
+                    .padding()
+            }
+                
         }.padding(.leading, 16)
             .onAppear {
                 Task {

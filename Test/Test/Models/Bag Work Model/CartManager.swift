@@ -72,8 +72,16 @@ class CartManager: ObservableObject {
                 currentCart.dishesCount.remove(at: index)
             }
         }
+        
+        // Дополнительная проверка на пустоту массивов
+        if currentCart.dishes.isEmpty || currentCart.dishesCount.isEmpty {
+            currentCart = defaultCart // Восстановление корзины по умолчанию, если оба массива пусты
+        }
+        
         saveCartToDefaults()
     }
+
+
     
     func getCountOfDish(dish: Dish) -> Int {
         if let index = currentCart.dishes.firstIndex(of: dish) {
