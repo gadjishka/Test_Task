@@ -46,7 +46,6 @@ struct CategoryRow: View {
                     .transition(.move(edge: .bottom))
             }
         }
-        .background(Color.white)
     }
 }
 

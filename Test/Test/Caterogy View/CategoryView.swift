@@ -11,7 +11,6 @@ struct CategoryView: View {
     let object: Category
     @Environment(\.presentationMode) var presentationMode
     private let dishes = Filtering()
-    @State private var filteredDishes: [Dish] = dishesMaterials
     @State private var dishesNotFiltered = dishesMaterials
     @State private var buttonStates: [Bool] = [true, false, false, false, false]
     private let buttonsNames: [String] = ["Все меню", "Салаты", "С рисом", "С рыбой", "Роллы"]
@@ -24,7 +23,7 @@ struct CategoryView: View {
                     ForEach(Array(buttonsNames.enumerated()), id: \.element) { index, name in
                         Button(action: {
                             self.updateButtonStates(index: index)
-                            filteredDishes = dishes.filterItemsByTeg(dishes: dishesNotFiltered, teg: name)
+                            self.dishesNotFiltered = dishes.filterItemsByTeg(dishes: dishesMaterials, teg: name)
                         }) {
                             Text(name)
                                 .font(Font.custom("SF Pro Display", size: 14))
@@ -42,7 +41,7 @@ struct CategoryView: View {
             }
             
             // Отображение блюд в строках с прокруткой
-            CategoryRow(items: filteredDishes)
+            CategoryRow(items: dishesNotFiltered)
         }
         .background(Color.white) // Фоновый цвет для всего CategoryView
         .navigationBarTitle(Text(object.name))
@@ -113,3 +112,4 @@ struct CategoryView_Previews: PreviewProvider {
         CategoryView(object: categoryMaterials[0])
     }
 }
+
