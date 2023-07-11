@@ -9,12 +9,12 @@ import SwiftUI
 
 struct CategoryView: View {
     let object: Category
-    @Environment(\.presentationMode) var presentationMode
-    private let dishes = Filtering()
-    @State private var dishesNotFiltered = dishesMaterials
+    let items: [Dish]
+    @Environment(\.presentationMode) var presentationMode 
+    @State private var dishesFiltered: [Dish] = []
     @State private var buttonStates: [Bool] = [true, false, false, false, false]
     private let buttonsNames: [String] = ["Все меню", "Салаты", "С рисом", "С рыбой", "Роллы"]
-
+    
     var body: some View {
         VStack {
             // Горизонтальная прокрутка для кнопок фильтрации
@@ -22,8 +22,7 @@ struct CategoryView: View {
                 HStack(alignment: .top, spacing: 10) {
                     ForEach(Array(buttonsNames.enumerated()), id: \.element) { index, name in
                         Button(action: {
-                            self.updateButtonStates(index: index)
-                            self.dishesNotFiltered = dishes.filterItemsByTeg(dishes: dishesMaterials, teg: name)
+                            filtering(index: index, name: name)
                         }) {
                             Text(name)
                                 .font(Font.custom("SF Pro Display", size: 14))
@@ -41,7 +40,7 @@ struct CategoryView: View {
             }
             
             // Отображение блюд в строках с прокруткой
-            CategoryRow(items: dishesNotFiltered)
+            CategoryRow(items: dishesFiltered)
         }
         .background(Color.white) // Фоновый цвет для всего CategoryView
         .navigationBarTitle(Text(object.name))
@@ -63,8 +62,16 @@ struct CategoryView: View {
                 .background(.white)
                 .cornerRadius(100)
         }
-        .disabled(true)
+            .disabled(true)
         )
+        .onAppear {
+            filtering(index: 0, name: "Все меню")
+       }
+    }
+    
+    private func filtering(index: Int, name: String) {
+        self.updateButtonStates(index: index)
+        self.dishesFiltered = Filtering().filterItemsByTeg(dishes: items, teg: name)
     }
     
     // Кнопка "Назад" в навигационной панели
@@ -107,9 +114,9 @@ struct CategoryView: View {
     }
 }
 
+
 struct CategoryView_Previews: PreviewProvider {
     static var previews: some View {
-        CategoryView(object: categoryMaterials[0])
+        CategoryView(object: categoryMaterials[0], items: dishesMaterials)
     }
 }
-

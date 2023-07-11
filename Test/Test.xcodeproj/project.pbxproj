@@ -223,6 +223,8 @@
 			dependencies = (
 			);
 			name = Test;
+			packageProductDependencies = (
+			);
 			productName = Test;
 			productReference = 3290957B2A4B38B700E605D5 /* Test.app */;
 			productType = "com.apple.product-type.application";
@@ -251,6 +253,8 @@
 				Base,
 			);
 			mainGroup = 329095722A4B38B700E605D5;
+			packageReferences = (
+			);
 			productRefGroup = 3290957C2A4B38B700E605D5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";

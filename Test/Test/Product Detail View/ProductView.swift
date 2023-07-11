@@ -8,13 +8,16 @@
 import SwiftUI
 
 struct ProductView: View {
+    @ObservedObject private var imageLoader: ImageLoader
     @EnvironmentObject var cartManager: CartManager
-    var object: Dish
+    private let object: Dish
     @Binding var showProfile: Bool
-    @State private var dishImage: Image?
     
-    private func loadDishImage() async {
-        dishImage = await loadImageFromURL(urlString: object.image_url)
+    init(object: Dish, showProfile: Binding<Bool>) {
+        let imageLoader = ImageLoader(urlString: object.image_url)
+        self.imageLoader = imageLoader
+        self.object = object
+        _showProfile = showProfile
     }
     
     var body: some View {
@@ -27,7 +30,7 @@ struct ProductView: View {
                 VStack {
                     VStack(spacing: 8) {
                         ZStack {
-                            if let image = dishImage {
+                            if let image = imageLoader.image {
                                 Rectangle()
                                     .foregroundColor(.clear)
                                     .frame(width: 198, height: 204)
@@ -114,11 +117,7 @@ struct ProductView: View {
             .background(.white.opacity(0.4))
             .cornerRadius(4)
         }
-        .onAppear {
-            Task {
-                await loadDishImage()
-            }
-        }
+        
     }
 }
 

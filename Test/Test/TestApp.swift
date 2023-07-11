@@ -20,6 +20,7 @@ struct TestApp: App {
             ContentView()
                 .preferredColorScheme(.light)
                 .environmentObject(cartManager)
+            
         }
     }
 }

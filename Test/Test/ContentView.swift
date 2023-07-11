@@ -17,11 +17,12 @@ enum Tab {
 struct ContentView: View {
     @State private var selectedTab: Tab = .home
     @EnvironmentObject private var cartManager: CartManager
+    @StateObject private var loadData = LoadData()
     
     var body: some View {
         TabView(selection: $selectedTab) {
             // Вкладка 1: Главная
-            MainMenuView(items: categoryMaterials)
+            MainMenuView(items: loadData.categoryData)
                 .tabItem {
                     Image(selectedTab == .home ? "main.blue" : "main")
                     Text("Главная")
@@ -48,12 +49,16 @@ struct ContentView: View {
                     Image("account")
                     Text("Аккаунт")
                 }.tag(Tab.account)
-        } 
+        }
+        .onAppear {
+            loadData.loadCategory()
+        }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .environmentObject(CartManager())
     }
 }

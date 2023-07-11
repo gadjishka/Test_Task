@@ -9,12 +9,16 @@ import SwiftUI
 
 struct BagItem: View {
     @EnvironmentObject var cartManager: CartManager
-    var bagItem: Dish
-    @State private var bagBackgroundImage: Image?
+    @ObservedObject private var imageLoader: ImageLoader
+    private let bagItem: Dish
     
-    private func loadBagBackgroundImage() async {
-        bagBackgroundImage = await loadImageFromURL(urlString: bagItem.image_url)
+    private let placeholderImage = Image(systemName: "photo") // Заглушка для изображения
+    init(bagItem: Dish) {
+        let imageLoader = ImageLoader(urlString: bagItem.image_url)
+        self.imageLoader = imageLoader
+        self.bagItem = bagItem
     }
+    
     private func getIndexForDish(_ dish: Dish) -> Int? {
         return cartManager.currentCart.dishes.firstIndex(where: { $0.name == dish.name })
     }
@@ -23,7 +27,7 @@ struct BagItem: View {
     var body: some View {
         HStack(alignment: .center, spacing: 8) {
             HStack (alignment: .center, spacing: 0){
-                if let image = bagBackgroundImage {
+                if let image = imageLoader.image {
                     Rectangle()
                         .foregroundColor(.clear)
                         .frame(width: 48.34863, height: 52.89908)
@@ -62,11 +66,6 @@ struct BagItem: View {
             }
                 
         }.padding(.leading, 16)
-            .onAppear {
-                Task {
-                    await loadBagBackgroundImage()
-                }
-            }
     }
 }
 

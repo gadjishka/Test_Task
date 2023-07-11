@@ -22,6 +22,7 @@ func getCurrentDate() -> String {
 
 class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     private let locationManager = CLLocationManager()
+    @Published var userCity: String = "Определяем местоположение"
     
     override init() {
         super.init()
@@ -69,5 +70,5 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
         }
     }
     
-    @Published var userCity: String = "Определяем местоположение"
+    
 }
