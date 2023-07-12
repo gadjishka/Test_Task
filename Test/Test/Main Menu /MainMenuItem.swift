@@ -56,9 +56,10 @@ struct MainMenuItem: View {
                 .hidden()
         )
         .onAppear {
-            if loadData.dishesData == [] {
-                loadData.loadDish()
+            if loadData.dishesData.count != 0 {
+                loadData.dishesData = []
             }
+            loadData.loadDish()
             
         }
     }

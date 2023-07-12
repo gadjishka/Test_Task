@@ -20,12 +20,16 @@ class ImageLoader: ObservableObject {
     private func loadImageFromURL() {
         Task {
             if let cachedImage = ImageCache.shared.getImage(urlString: urlString) {
-                self.image = cachedImage
+                DispatchQueue.main.async {
+                    self.image = cachedImage
+                }
                 return
             }
             
             guard let url = URL(string: urlString) else {
-                self.image = Image(systemName: "photo") // Заглушка для изображения
+                DispatchQueue.main.async {
+                    self.image = Image(systemName: "photo")
+                }
                 return
             }
             
@@ -35,17 +39,22 @@ class ImageLoader: ObservableObject {
                 if let uiImage = UIImage(data: data) {
                     let image = Image(uiImage: uiImage)
                     ImageCache.shared.setImage(image, urlString: urlString)
-                    DispatchQueue.main.async {
-                        self.image = image
+                    Task {
+                        await MainActor.run {
+                            self.image = image
+                        }
                     }
                 }
             } catch {
                 print("Error loading image: \(error)")
-                DispatchQueue.main.async {
-                    self.image = Image(systemName: "photo") // Заглушка для изображения
+                Task {
+                    await MainActor.run {
+                        self.image = Image(systemName: "photo")
+                    }
                 }
             }
         }
     }
 }
+
 
