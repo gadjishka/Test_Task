@@ -12,12 +12,13 @@ var dishesMaterials: [Dish] = []
 var categoryMaterials: [Category] = []
 
 class LoadData: ObservableObject {
-    @Published var dishesData: [Dish] = []
-    @Published var categoryData: [Category] = []
+    @Published var dishesData: [Dish] = [] // Массив данных блюд
+    @Published var categoryData: [Category] = [] // Массив данных категорий
     
     private let dishesURL = "https://run.mocky.io/v3/aba7ecaa-0a70-453b-b62d-0e326c859b3b"
     private let categoryURL = "https://run.mocky.io/v3/058729bd-1402-4578-88de-265481fd7d54"
     
+    // Метод для загрузки и разбора JSON-данных из URL-адреса
     func parseJSONFromURL(urlString: String, completion: @escaping ([[String: Any]]?, Error?) -> Void) {
         guard let url = URL(string: urlString) else {
             completion(nil, NSError(domain: "InvalidURL", code: 0, userInfo: nil))
@@ -45,6 +46,7 @@ class LoadData: ObservableObject {
                     return
                 }
                 
+                // Получение массива значений из словаря JSON
                 if let array = jsonArray.values.first as? [[String: Any]] {
                     completion(array, nil)
                 } else {
@@ -59,6 +61,7 @@ class LoadData: ObservableObject {
         task.resume()
     }
     
+    // Метод для загрузки данных категорий
     func loadCategory() {
         parseJSONFromURL(urlString: categoryURL) { (categoryJSONArray, error) in
             if let error = error {
@@ -84,6 +87,7 @@ class LoadData: ObservableObject {
         }
     }
 
+    // Метод для загрузки данных блюд
     func loadDish() {
         parseJSONFromURL(urlString: dishesURL) { (dishJSONArray, error) in
             if let error = error {

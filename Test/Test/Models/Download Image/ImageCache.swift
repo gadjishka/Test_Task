@@ -9,9 +9,9 @@ import Foundation
 import SwiftUI
 
 class ImageCache {
-    static let shared = ImageCache()
-    private var cache: [String: Image] = [:]
-    private let lock = NSLock()
+    static let shared = ImageCache() // Статический экземпляр для доступа к кэшу
+    private var cache: [String: Image] = [:] // Кэш изображений
+    private let lock = NSLock() // Объект блокировки для безопасного доступа к кэшу из нескольких потоков
     
     private init() {}
     
@@ -21,7 +21,7 @@ class ImageCache {
             lock.unlock()
         }
         
-        return cache[urlString]
+        return cache[urlString] // Возвращаем изображение из кэша по ключу URL-адреса
     }
     
     func setImage(_ image: Image, urlString: String) {
@@ -30,7 +30,7 @@ class ImageCache {
             lock.unlock()
         }
         
-        cache[urlString] = image
+        cache[urlString] = image // Сохраняем изображение в кэше по ключу URL-адреса
     }
 }
 
